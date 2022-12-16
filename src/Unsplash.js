@@ -8,10 +8,12 @@ class Unsplash extends Component {
     super(props);
     this.client_id = '0d54d7bf8f81c9ee80a75d9e1263fbb6b8267fad9d908e597b9f7c4f6bcdee23';
     this.pageSize = 20;
+    this.totalPages = 20;
+    this.sortOrder = 'relevant'
     this.currentPage = 1;
-    this.state = {items: [], inputValue: '', searchResults: []}
+    this.state = {items: [], inputValue: '', searchResults: [], totalCount: -1}
     
-    const binded = ['autocomplete', 'openFullscreen', 'closeFullscreen', 'searchImages', 'imageThumbnail', 'loadMoreOnScrollEnd'];
+    const binded = ['callUnsplashApi', 'autocomplete', 'openFullscreen', 'closeFullscreen', 'searchImages', 'imageThumbnail', 'loadMoreOnScrollEnd', 'updateSort'];
     binded.forEach( fn => {this[fn] = this[fn].bind(this); });
   }
 
@@ -26,14 +28,11 @@ class Unsplash extends Component {
   }
 
   loadMoreOnScrollEnd(e){
-    // debugger;
-    // console.log(window.pageYOffset)
-    // if (window.pageYOffset -)
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      // you're at the bottom of the page
+    if ((window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight && !this.pause) {
+      // this.pause = true; setTimeout( ()=> {this.pause = false}, 1000)
       let loadMore = true;
-      this.searchImages(null, loadMore)
-  }
+      if (this.totalPages > this.currentPage) this.searchImages(null, loadMore)
+    }
   }
 
 
@@ -103,9 +102,8 @@ class Unsplash extends Component {
   }
 
   searchImages(e, loadMore) {
-    let searchString
-    if (loadMore || e.target.id == 'search-bar') searchString = this.state.inputValue;
-    else searchString = e.target.innerText;
+    let searchString = this.state.inputValue;
+    if (e?.target?.tagName == 'DIV')  searchString = e?.target?.innerText;
     if (loadMore) {
       this.currentPage++
     }
@@ -116,21 +114,33 @@ class Unsplash extends Component {
     e?.stopPropagation();
 
     this.showSearchResults = false;
-    let url = `https://unsplash.com/napi/search?query=${searchString}&per_page=${this.pageSize}&page=${this.currentPage}`
+    let url = `https://unsplash.com/napi/search?query=${searchString}&per_page=${this.pageSize}&page=${this.currentPage}&order_by=${this.sortOrder}`
+    if(this.colorPreference && this.colorPreference!='All') url += `&color=${this.colorPreference}`
     let cb = (res) => {
       let photos = (loadMore) ? [...this.state.items, ...res.photos.results] : res.photos.results
       this.setState( {
         // items: res.collections.results
         // items: res.photos.results,
         items: photos,
+        totalCount: res.photos.total,
+        totalPages: res.photos.total_pages,
         inputValue: searchString
       })
     };
-    this.callUnsplashApi(url, cb)
+    searchString && this.callUnsplashApi(url, cb)
+  }
+
+  updateSort(e) {
+    if(e.target.id == 'sort-order')
+      this.sortOrder = e.target.value;
+    if(e.target.id == 'color-pref')
+      this.colorPreference = e.target.value;
+    this.searchImages(null, false);
   }
 
   SearchBar() {
     return (
+      <div className="search-container">
       <form id="search-bar" className="search-bar" onSubmit={this.searchImages}>
         <input
           id="search-input"
@@ -150,6 +160,33 @@ class Unsplash extends Component {
         </div>
         )}
       </form>
+      <div className="filters">
+        <div id="sort-filter">
+          <label> Sort by</label>
+          <select id="sort-order" onChange={this.updateSort}>
+            <option value="relevant"> Relevance</option>
+            <option value="latest"> Latest</option>
+          </select>
+        </div>
+        <div id="color-filter">
+          <label> Color Preference</label>
+          <select id="color-pref" onChange={this.updateSort}>
+            <option value="All"> All</option>
+            <option value="black_and_white"> Black n' White</option>
+            <option value="black"> Black</option>
+            <option value="white"> White</option>
+            <option value="yellow"> Yellow</option>
+            <option value="orange"> Orange</option>
+            <option value="red"> Red</option>
+            <option value="purple"> Black</option>
+            <option value="magenta"> Magenta</option>
+            <option value="green"> Green</option>
+            <option value="teal"> Teal</option>
+            <option value="blue"> Blue</option>
+          </select>
+        </div>
+      </div>
+      </div>
     )
   }
 
@@ -195,6 +232,7 @@ class Unsplash extends Component {
         {this.SearchBar()}
         {error && <div className="error-message">{error.message || JSON.stringify(error)}</div>}
         <div className="contents" id ="123">
+          {this.state.totalCount > -1 && <div id="img-count"> {this.state.totalCount || 'No'} photos found online!</div>}
           <div className="image-gallary">
             {
               items.map(this.imageThumbnail)

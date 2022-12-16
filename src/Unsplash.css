@@ -75,6 +75,15 @@ body {
     color: 'darkred' !important
 }
 
+.search-container {
+    display: flex;
+    width: 100%;
+}
+.search-bar {
+    width: 60%;
+    float:left;
+}
+
 .search-bar input {padding: 5px;
     width: 100%;
     background: rgb(36, 36, 36);
@@ -110,4 +119,14 @@ input:focus, button:focus, select:focus {
 #results-list div:hover {
     opacity: 1;
     font-weight: bold;
+}
+
+.filters {
+    display: flex;
+}
+
+#sort-filter, #color-filter {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
 }
