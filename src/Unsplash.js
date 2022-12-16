@@ -7,9 +7,11 @@ class Unsplash extends Component {
   constructor(props){
     super(props);
     this.client_id = '0d54d7bf8f81c9ee80a75d9e1263fbb6b8267fad9d908e597b9f7c4f6bcdee23';
+    this.pageSize = 20;
+    this.currentPage = 1;
     this.state = {items: [], inputValue: '', searchResults: []}
     
-    const binded = ['autocomplete', 'openFullscreen', 'closeFullscreen', 'searchImages', 'imageThumbnail'];
+    const binded = ['autocomplete', 'openFullscreen', 'closeFullscreen', 'searchImages', 'imageThumbnail', 'loadMoreOnScrollEnd'];
     binded.forEach( fn => {this[fn] = this[fn].bind(this); });
   }
 
@@ -18,8 +20,20 @@ class Unsplash extends Component {
   }
 
   componentDidMount() {
-    let initUrl = 'https://api.unsplash.com/photos/?client_id=' + this.client_id
+    let initUrl = `https://api.unsplash.com/photos/?per_page=${30}&client_id=${this.client_id}`
+    document.addEventListener('scroll', this.loadMoreOnScrollEnd)
     this.callUnsplashApi(initUrl);
+  }
+
+  loadMoreOnScrollEnd(e){
+    // debugger;
+    // console.log(window.pageYOffset)
+    // if (window.pageYOffset -)
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      // you're at the bottom of the page
+      let loadMore = true;
+      this.searchImages(null, loadMore)
+  }
   }
 
 
@@ -85,21 +99,30 @@ class Unsplash extends Component {
     let cb = (results => {
       this.setState({searchResults: results})
     })
-    this.callUnsplashApi(searchUrl, cb)
+    searchString && this.callUnsplashApi(searchUrl, cb)
   }
 
-  searchImages(e) {
-    let searchString = e.target.innerText;
-    if (e.target.id == 'search-bar') searchString = this.state.inputValue;
-    e.preventDefault();
-    e.stopPropagation();
+  searchImages(e, loadMore) {
+    let searchString
+    if (loadMore || e.target.id == 'search-bar') searchString = this.state.inputValue;
+    else searchString = e.target.innerText;
+    if (loadMore) {
+      this.currentPage++
+    }
+    else {
+      this.currentPage = 1
+    }
+    e?.preventDefault();
+    e?.stopPropagation();
 
     this.showSearchResults = false;
-    let url = `https://unsplash.com/napi/search?query=${searchString}&per_page=20`
+    let url = `https://unsplash.com/napi/search?query=${searchString}&per_page=${this.pageSize}&page=${this.currentPage}`
     let cb = (res) => {
+      let photos = (loadMore) ? [...this.state.items, ...res.photos.results] : res.photos.results
       this.setState( {
         // items: res.collections.results
-        items: res.photos.results,
+        // items: res.photos.results,
+        items: photos,
         inputValue: searchString
       })
     };
@@ -152,7 +175,7 @@ class Unsplash extends Component {
     return (
       <div className="img-thumbnail" key={'img-' + i}>
         <img onClick={ () => {this.openFullscreen(item)}} className="images-small" src={item.urls.small_s3}></img>
-        <div class="img-info">
+        <div className="img-info">
           {item.description || item.alt_description}
           {/* {item.user?.first_name} {item.user?.last_name} */}
           {/* {JSON.stringify(item.user)} */}
