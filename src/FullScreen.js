@@ -27,12 +27,13 @@ class FullScreen extends Component {
     if(photo.created_at) userInfo += ` on ${new Date(photo.created_at).toDateString()}`;
     return (
       <div onClick={this.props.exit} className="fullscreen-overlay">
+        <div id="close-btn"> x </div>
         <div className="fullscreen-backdrop"></div>
-        <div className="fullscreen-img-container" textAlign="center">
+        <div className="fullscreen-img-container">
           <div className="fullscreen-img-info">
             {photo.description || photo.alt_description}
           </div>
-          <img id="fullscreen-image" className="fullscreen-img" src={photo.urls.raw}></img>
+          <img onClick={(e)=>{return; e.stopPropagation(); e.preventDefault()}} id="fullscreen-image" className="fullscreen-img" src={photo.urls.raw}></img>
           <div className="fullscreen-img-info user-info">
             { userInfo}
           </div>

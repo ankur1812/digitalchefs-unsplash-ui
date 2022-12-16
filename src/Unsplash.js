@@ -66,16 +66,13 @@ class Unsplash extends Component {
     )
   }
 
-  header(title = "Digital Chefs", imgUrl = 'https://digitalchefs.nl/img/DigitalChefsLogo@2x.png'){
+  header(title = "Unsplash UI", imgUrl = 'https://digitalchefs.nl/img/DigitalChefsLogo@2x.png'){
     let words = title.split(' ')
     return(
     <div className="header">
-      <img style={{float:"left"}} height="42" src={imgUrl}/>
+      <img style={{float:"left", marginTop:'4px'}} height="28" src={imgUrl}/>
       &nbsp;
-      <span className="caps">{words[0][0]}</span>
-      {words[0].substring(1)}
-      <span className="caps">{words[1][0]}</span>
-      {words[1].substring(1)}
+      <span>{title}</span>
     </div>)
   }
 
@@ -96,6 +93,11 @@ class Unsplash extends Component {
     //   }
     // }
     let cb = (results => {
+      let suggestions = [];
+      // Merge the autocomplete, did_you_mean and fuzzy suggestions
+      let mergedResults = [...results.autocomplete, ...results.did_you_mean, ...results.fuzzy];
+      // Dont' add duplicate suggestions
+      mergedResults.forEach(a => {if (suggestions.indexOf(a) == -1) suggestions.push(a)})
       this.setState({searchResults: results})
     })
     searchString && this.callUnsplashApi(searchUrl, cb)
@@ -145,9 +147,10 @@ class Unsplash extends Component {
         <input
           id="search-input"
           list="imgsearch"
+          onBlur={()=>{this.setState({showSearchResults: false})}}
           value={this.state.inputValue} 
           type="text"
-          placeholder="Search more images here!"
+          placeholder="Search images here!"
           onChange={this.autocomplete}
           >
         </input>{this.showSearchResults && (
@@ -210,8 +213,8 @@ class Unsplash extends Component {
 
   imageThumbnail(item, i) {
     return (
-      <div className="img-thumbnail" key={'img-' + i}>
-        <img onClick={ () => {this.openFullscreen(item)}} className="images-small" src={item.urls.small_s3}></img>
+      <div onClick={ () => {this.openFullscreen(item)}} className="img-thumbnail" key={'img-' + i}>
+        <img className="images-small" src={item.urls.small_s3}></img>
         <div className="img-info">
           {item.description || item.alt_description}
           {/* {item.user?.first_name} {item.user?.last_name} */}
@@ -228,16 +231,22 @@ class Unsplash extends Component {
     return (
       <div>
         {fullscreenImg && <FullScreen photo={fullscreenImg} exit={this.closeFullscreen}></FullScreen>}
-        {this.header()}
-        {this.SearchBar()}
-        {error && <div className="error-message">{error.message || JSON.stringify(error)}</div>}
         <div className="contents" id ="123">
-          {this.state.totalCount > -1 && <div id="img-count"> {this.state.totalCount || 'No'} photos found online!</div>}
+          {this.header()}
+          <div>Use below search bar to search your favorite Unsplash images</div>
+          {this.SearchBar()}
+          {error && <div className="error-message">{error.message || JSON.stringify(error)}</div>}
+          {this.state.totalCount > -1 && <div id="img-count"> {this.state.totalCount || 'No'} photos found online for "{this.state.inputValue}"!</div>}
           <div className="image-gallary">
             {
               items.map(this.imageThumbnail)
             }
           </div>
+          {this.state.totalCount == -1 && (
+            <div id="footer-msg"> 
+              These are some photos which were fetched randomly through API. Use the search-box to explore more!
+            </div>
+          )}
 
         </div>
       </div>
