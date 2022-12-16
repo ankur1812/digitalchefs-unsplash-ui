@@ -14,6 +14,7 @@ The project is also available on Codepen, and can be checked through below links
 <a href="https://codepen.io/ankur1218/full/OJwLVVJ">Demo Fullscreen</a>
 
 
+NOTE: The Unsplash search API currently faces the CORS issues. For a quick fix, the <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en">CORS Unblock</a> chrome extension can be installed (and activated).
 
 
 ### Features
