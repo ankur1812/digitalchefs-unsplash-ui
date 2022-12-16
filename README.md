@@ -1,4 +1,44 @@
-# Getting Started with Create React App
+## UI Assignment | Digital Chefs 
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), and uses 
+<a href="https://unsplash.com/documentation">Unsplash</a> APIs.
+
+### Homescreen
+Images are fetched through Unsplash API: https://api.unsplash.com/photos/?client_id={client_id}
+
+#### Demo
+The project is also available on Codepen, and can be checked through below links: 
+
+<a href="https://codepen.io/ankur1218/pen/OJwLVVJ">Code + Demo</a>.
+
+<a href="https://codepen.io/ankur1218/full/OJwLVVJ">Demo Fullscreen</a>
+
+
+
+
+### Features
+
+- Search Photos: Search Bar is provided to users, which also gives suggestion to users
+- Fullscreen View: Images can be expanded to fullscreen by clicking on their thumbnails
+- Sorting & Filtering - Sorting for "Latest" and "Relevant" photos. Filter for "Colors" is provided
+
+### Repo Download
+The project can be downloaded as ZIP or through git cli.
+```
+git clone git@github.com:ankur1812/digitalchefs-unsplash-ui.git
+```
+
+#### `npm start`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+
+
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +107,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
