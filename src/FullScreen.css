@@ -36,6 +36,24 @@
     text-align: center;
 }
 
+.fullscreen-img-info {
+    position: fixed;
+    top:0;
+    /* position: sticky;
+    position: -webkit-sticky; */
+    padding: 6px;
+    opacity: 0.8;
+    background-color: black;
+    width: 100%;
+    /* text-transform: capitalize; */
+}
+
+.user-info {
+    top: initial;
+    bottom: 0 !important;
+
+}
+
 .fullscreen-img {
     width: 80vw;
     /* height: 80vh; */

@@ -21,11 +21,22 @@ class FullScreen extends Component {
   }
 
   render(){
+    let photo = this.props.photo;
+    let userInfo = '';
+    if(photo.user) userInfo += `Uploaded by: ${photo.user?.first_name || ''} ${photo.user?.last_name || ''}`;
+    if(photo.created_at) userInfo += ` on ${new Date(photo.created_at).toDateString()}`;
     return (
       <div onClick={this.props.exit} className="fullscreen-overlay">
         <div className="fullscreen-backdrop"></div>
         <div className="fullscreen-img-container" textAlign="center">
-          <img id="fullscreen-image" className="fullscreen-img" src={this.props.imgUrl}></img>
+          <div className="fullscreen-img-info">
+            {photo.description || photo.alt_description}
+          </div>
+          <img id="fullscreen-image" className="fullscreen-img" src={photo.urls.raw}></img>
+          <div className="fullscreen-img-info user-info">
+            { userInfo}
+          </div>
+
         </div>
       </div>
     );
