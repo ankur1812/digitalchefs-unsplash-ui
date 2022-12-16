@@ -70,7 +70,7 @@ class Unsplash extends Component {
     let words = title.split(' ')
     return(
     <div className="header">
-      <img style={{float:"left", marginTop:'4px'}} height="28" src={imgUrl}/>
+      <img style={{float:"left", marginTop:'4px', height: '28px'}} height="28" src={imgUrl}/>
       &nbsp;
       <span>{title}</span>
     </div>)
