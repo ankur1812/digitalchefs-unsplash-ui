@@ -81,6 +81,7 @@ class Unsplash extends Component {
     this.showSearchResults = true;
     let searchString = e ? e.target.value : this.state.inputValue ;
     let searchUrl = 'https://unsplash.com/nautocomplete/' + searchString
+    searchUrl = '/nautocomplete/' + searchString
     // searchUrl = 'http://localhost:3000/api/photos/?client_id=' + this.client_id
     // searchUrl = '/unsplash/nautocomplete/' + searchString
     // let options = { headers: {Authorization: 'client_id=0d54d7bf8f81c9ee80a75d9e1263fbb6b8267fad9d908e597b9f7c4f6bcdee23'}}
@@ -117,6 +118,7 @@ class Unsplash extends Component {
 
     this.showSearchResults = false;
     let url = `https://unsplash.com/napi/search?query=${searchString}&per_page=${this.pageSize}&page=${this.currentPage}&order_by=${this.sortOrder}`
+    url = `/napi/search?query=${searchString}&per_page=${this.pageSize}&page=${this.currentPage}&order_by=${this.sortOrder}`
     if(this.colorPreference && this.colorPreference!='All') url += `&color=${this.colorPreference}`
     let cb = (res) => {
       let photos = (loadMore) ? [...this.state.items, ...res.photos.results] : res.photos.results

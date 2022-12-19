@@ -9,12 +9,10 @@ Images are fetched through Unsplash API: https://api.unsplash.com/photos/?client
 #### Demo
 The project is also available on Codepen, and can be checked through below links: 
 
-<a href="https://codepen.io/ankur1218/pen/OJwLVVJ">Code + Demo</a>.
-
-<a href="https://codepen.io/ankur1218/full/OJwLVVJ">Demo Fullscreen</a>
+<a href="https://codepen.io/ankur1218/full/OJwLVVJ">Project Demo (Codepen) </a>
 
 
-NOTE: The Unsplash search API currently faces the CORS issues. For a quick fix, the <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en">CORS Unblock</a> chrome extension can be installed (and activated).
+<b>NOTE: </b> The Unsplash search API currently faces <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors">CORS</a> issues inside Codepen. For fixing it, either install (and activate) the <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en">CORS Unblock</a> chrome extension on your browser, or setup this project directly on your localhost.
 
 
 ### Features
