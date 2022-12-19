@@ -78,9 +78,14 @@ body {
 }
 
 .error-message {
-    color: 'darkred' !important
+    color: orange !important
 }
 
+a, a:visited {
+    color: inherit;
+    text-decoration: underline;
+  }
+  
 .search-container {
     display: flex;
     width: 100%;

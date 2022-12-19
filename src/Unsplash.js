@@ -59,7 +59,7 @@ class Unsplash extends Component {
       (error) => {
         this.setState({
           isLoaded: true,
-          items: [],
+          // items: [],
           error
         });
       }
@@ -235,7 +235,16 @@ class Unsplash extends Component {
           {this.header()}
           <div>Use below search bar to search your favorite Unsplash images</div>
           {this.SearchBar()}
-          {error && <div className="error-message">{error.message || JSON.stringify(error)}</div>}
+          {error && <div className="error-message">
+              <b><u>ERROR:</u></b> &nbsp;
+              {error.message || JSON.stringify(error)}. 
+              Please install &nbsp;
+              <a target="_blank" 
+                href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en">
+                CORS Unblock</a>  &nbsp;
+              plugin browser to fix this issue <br/>
+          </div>
+          }
           {this.state.totalCount > -1 && <div id="img-count"> {this.state.totalCount || 'No'} photos found online for "{this.state.inputValue}"!</div>}
           <div className="image-gallary">
             {
